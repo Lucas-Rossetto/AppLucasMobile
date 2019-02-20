@@ -2,7 +2,7 @@ import 'package:app_lucas/fab_with_icons.dart';
 import 'package:app_lucas/fab_bottom_app_bar.dart';
 import 'package:app_lucas/layout.dart';
 import 'package:flutter/material.dart';
-import 'package:app_lucas/todo_list.dart';
+import 'package:app_lucas/todo_list_screen.dart';
 import 'package:app_lucas/todo.dart';
 
 void main() => runApp(new MyApp());
@@ -39,33 +39,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  String _lastSelected = 'Flux RSS';
+  String _lastSelected = 'Page d' 'accueil';
   List<Todo> todos = null;
-
 
   void _selectedTab(int index) {
     setState(() {
-
-      if(index == 0){
-
-      _lastSelected = "This is a TODO list";
-      todos = [ Todo(title: 'Learn Dart'),
-                       Todo(title: 'Try Flutter'),
-                       Todo(title: 'Be amazed'),
-                ];
+      if (index == 0) {
+        _lastSelected = "Flux RSS";
+        todos = [
+          Todo(title: 'Learn Dart'),
+          Todo(title: 'Try Flutter'),
+          Todo(title: 'Be amazed'),
+        ];
       }
 
-      if(index == 1){
-      _lastSelected = 'TAB: $index';
+      if (index == 1) {
+        _lastSelected = 'TAB: $index';
       }
-      if(index == 2){
-      _lastSelected = 'TAB: $index';
+      if (index == 2) {
+        _lastSelected = 'TAB: $index';
       }
-      if(index == 3){
-      _lastSelected = 'TAB: 1888';
+      if (index == 3) {
+        _lastSelected = 'TAB: 1888';
       }
-
-
     });
   }
 
@@ -82,9 +78,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Text(
-          _lastSelected,
-          style: TextStyle(fontSize: 32.0),
+        child: Column(
+          children: <Widget>[
+          Text(
+            _lastSelected,
+            style: TextStyle(fontSize: 32.0),
+          ),
+          TodoListScreen(todos),
+        ]
         ),
       ),
       bottomNavigationBar: FABBottomAppBar(
@@ -107,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   Widget _buildFab(BuildContext context) {
-    final icons = [ Icons.sms, Icons.mail, Icons.phone ];
+    final icons = [Icons.sms, Icons.mail, Icons.phone];
     return AnchoredOverlay(
       showOverlay: true,
       overlayBuilder: (context, offset) {
@@ -120,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         );
       },
       child: FloatingActionButton(
-        onPressed: () { },
+        onPressed: () {},
         tooltip: 'Increment',
         child: Icon(Icons.add),
         elevation: 2.0,
@@ -128,7 +129,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
   }
 }
-
 
 // class MyApp extends StatelessWidget {
 //   @override
