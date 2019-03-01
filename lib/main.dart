@@ -4,6 +4,15 @@ import 'package:app_lucas/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:app_lucas/todo_list_screen.dart';
 import 'package:app_lucas/todo.dart';
+import 'package:app_lucas/todo_list.dart';
+import 'package:app_lucas/todolist.dart';
+
+
+
+
+
+
+
 
 void main() => runApp(new MyApp());
 
@@ -29,6 +38,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -39,29 +50,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  String _lastSelected = 'Page d' 'accueil';
-  List<Todo> todos = null;
+  String _lastSelected = 'Page d''accueil';
+  List<Todo> todos = [];
+  //TodoApp todoapp = new TodoApp();
+  //BuildContext context;
 
   void _selectedTab(int index) {
     setState(() {
       if (index == 0) {
         _lastSelected = "Flux RSS";
-        todos = [
-          Todo(title: 'Learn Dart'),
-          Todo(title: 'Try Flutter'),
-          Todo(title: 'Be amazed'),
-        ];
+      
       }
 
       if (index == 1) {
-        _lastSelected = 'TAB: $index';
+        return TodoApp();
       }
+
       if (index == 2) {
-        _lastSelected = 'TAB: $index';
+        _lastSelected = 'Fil d actualité';
       }
+
       if (index == 3) {
         _lastSelected = 'TAB: 1888';
       }
+
     });
   }
 
@@ -78,14 +90,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-          Text(
-            _lastSelected,
-            style: TextStyle(fontSize: 32.0),
-          ),
-          TodoListScreen(todos),
-        ]
+            
+              
+
+          ],
+          
+          // style: TextStyle(fontSize: 32.0),
+          // ),
+        
+        // ),
         ),
       ),
       bottomNavigationBar: FABBottomAppBar(
@@ -96,9 +112,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         onTabSelected: _selectedTab,
         items: [
           FABBottomAppBarItem(iconData: Icons.rss_feed, text: 'RSS'),
-          FABBottomAppBarItem(iconData: Icons.list, text: 'List 1'),
-          FABBottomAppBarItem(iconData: Icons.list, text: 'List 2'),
-          FABBottomAppBarItem(iconData: Icons.list, text: 'List 3'),
+          FABBottomAppBarItem(iconData: Icons.list, text: 'Todo list'),
+          FABBottomAppBarItem(iconData: Icons.list, text: 'Actualités'),
+          FABBottomAppBarItem(iconData: Icons.list, text: '???'),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -129,6 +145,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
   }
 }
+
+
+
+
+
 
 // class MyApp extends StatelessWidget {
 //   @override
@@ -170,19 +191,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 //         ],
 //       ),
 //     );
-//     return MaterialApp(
-//       title: 'Flutter layout demo',
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: Text('Flutter layout demo'),
-//         ),
-//         body: Column(
-//           children: [
-//             titleSection,
-//           ],
-//         ),
-//       ),
-//     );
+//    
 //   }
 // }
 
