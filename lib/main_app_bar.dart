@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_lucas/layout_type.dart';
+import 'package:flutter_app/layout_type.dart';
 
 
 class MainAppBar extends AppBar {

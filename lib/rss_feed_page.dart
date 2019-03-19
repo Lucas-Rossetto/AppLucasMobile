@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
-// import 'package:app_lucas/layout_type.dart';
-// import 'package:app_lucas/layout.dart';
+// import 'package:flutter_app/layout_type.dart';
+// import 'package:flutter_app/layout.dart';
 // import 'dart:io';
 // import 'dart:convert';
 // import 'dart:async';
@@ -170,11 +170,11 @@
 //   }
 
 //   getFeed(String feed) async {
-//     var httpClient = new HttpClient();
+//     var httpTodoList = new HttpTodoList();
 //     List<FeedItem> result = [];
 //     String error;
 //     try {
-//       var request = await httpClient.getUrl(Uri.parse(feed));
+//       var request = await httpTodoList.getUrl(Uri.parse(feed));
 //       var response = await request.close();
 //       if (response.statusCode == HttpStatus.OK) {
 //         String rawOut = await response.transform(utf8.decoder).join();

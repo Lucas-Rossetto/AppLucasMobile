@@ -23,7 +23,7 @@ String layoutName(LayoutType layoutType) {
     case LayoutType.todo:
       return 'Todo list';
     case LayoutType.actuality:
-      return "Fil d''actualité";
+      return "Fil d'actualité";
     case LayoutType.whatEver:
       return "Peu importe"; 
     default:

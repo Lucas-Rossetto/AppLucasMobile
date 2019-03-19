@@ -4,40 +4,34 @@ class TodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Todo List',
-      home: new _TodoList()
+      home: new TodoList(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class TodoList extends StatefulWidget {
 
-Widget child;
-TodoList({this.child});
-
   @override
   createState() => new TodoListState();
 
-  static TodoListState of(BuildContext context){
-    return (context.inheritFromWidgetOfExactType(_TodoList) as _TodoList).data;
-  }
-
-
 }
 
+// class _TodoList extends InheritedWidget {
 
-class _TodoList extends InheritedWidget {
+// final TodoListState data;
 
-final TodoListState data;
+// _TodoList({Key key , this.data , Widget child}) { 
+  
+//   super(key : key , child: child);
 
-_TodoList({Key key , this.data , Widget child}) : super(key : key , child: child);
+// }
+// @override
+// bool updateShouldNotify(_TodoList old){
+//   return true;
+// }
 
-@override
-bool updateShouldNotify(_TodoList old){
-  return true;
-}
-
-}
+// }
 
 
 class TodoListState extends State<TodoList> {
@@ -100,6 +94,7 @@ class TodoListState extends State<TodoList> {
   Widget _buildTodoItem(String todoText, int index) {
     return new ListTile(
       title: new Text(todoText),
+
       onTap: () => _promptRemoveTodoItem(index)
     );
   }
@@ -107,17 +102,21 @@ class TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Todo List')
-      ),
+   //   appBar: new AppBar(
+     //   title: new Text('Todo List')
+    //  ),
       body: _buildTodoList(),
       floatingActionButton: new FloatingActionButton(
         onPressed: _pushAddTodoScreen,
         tooltip: 'Add task',
-        child: new Icon(Icons.add)
+        child: new Icon(Icons.add),
+
+    
       ),
     );
   }
+
+  
 
   void _pushAddTodoScreen() {
     // Push this page onto the stack

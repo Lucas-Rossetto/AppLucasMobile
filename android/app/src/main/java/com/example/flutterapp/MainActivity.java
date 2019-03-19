@@ -1,4 +1,4 @@
-package com.example.applucas;
+package com.example.flutterapp;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

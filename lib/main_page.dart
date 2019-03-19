@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
-// import 'package:app_lucas/layout_type.dart';
-// import 'package:app_lucas/rss_feed_page.dart';
+// import 'package:flutter_app/layout_type.dart';
+// import 'package:flutter_app/rss_feed_page.dart';
 
 // class MainPage extends StatefulWidget {
 //   MainPage({Key key}) : super(key: key);

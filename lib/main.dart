@@ -1,18 +1,16 @@
-import 'package:app_lucas/fab_with_icons.dart';
-import 'package:app_lucas/fab_bottom_app_bar.dart';
-import 'package:app_lucas/layout.dart';
+import 'package:flutter_app/fab_with_icons.dart';
+import 'package:flutter_app/fab_bottom_app_bar.dart';
+import 'package:flutter_app/layout.dart';
 import 'package:flutter/material.dart';
-import 'package:app_lucas/todo_list_screen.dart';
-import 'package:app_lucas/todo.dart';
-import 'package:app_lucas/todo_list.dart';
-import 'package:app_lucas/todolist.dart';
-
-
-
-
-
-
-
+import 'package:flutter_app/todo_list_screen.dart';
+import 'package:flutter_app/todo.dart';
+import 'package:flutter_app/todolistDatabase.dart';
+import 'package:flutter_app/todo_list.dart';
+import 'package:flutter_app/todolist.dart';
+import 'package:flutter_app/layout_type.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_app/database.dart';
+import 'dart:math' as math;
 
 void main() => runApp(new MyApp());
 
@@ -52,30 +50,101 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   String _lastSelected = 'Page d''accueil';
   List<Todo> todos = [];
+  LayoutType layoutType = LayoutType.rss;
   //TodoApp todoapp = new TodoApp();
   //BuildContext context;
 
+
+   Color _colorTabMatching({LayoutType layoutSelection}) {
+      return layoutType == layoutSelection ? Colors.orange : Colors.grey;
+    }
+  
+
+     List<TodoData> testTodo = [
+    TodoData(task: "tache" , checked: true),
+];
+
+
+
+   BottomNavigationBarItem _buildItem(
+      {IconData icon, LayoutType layoutSelection}) {
+    String text = layoutName(layoutSelection);
+    return BottomNavigationBarItem(
+      icon: Icon(
+        icon,
+        color: _colorTabMatching(layoutSelection: layoutSelection),
+      ),
+      title: Text(
+        text,
+        style: TextStyle(
+          color: _colorTabMatching(layoutSelection: layoutSelection),
+        ),
+      ),
+    );
+  }
+
+
+  Widget _buildBottomNavigationBar() {
+
+      return BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: [
+          _buildItem(
+              icon: Icons.rss_feed, layoutSelection: LayoutType.rss),
+          _buildItem(
+              icon: Icons.list, layoutSelection: LayoutType.todo),
+          _buildItem(icon: Icons.list, layoutSelection: LayoutType.actuality),
+          _buildItem(
+              icon: Icons.list, layoutSelection: LayoutType.whatEver),
+
+        ],
+        onTap: _selectedTab,
+      );
+  }
+
   void _selectedTab(int index) {
-    setState(() {
-      if (index == 0) {
-        _lastSelected = "Flux RSS";
-      
-      }
 
-      if (index == 1) {
-        return TodoApp();
-      }
+     setState(() {
+      switch(index){
 
-      if (index == 2) {
-        _lastSelected = 'Fil d actualité';
-      }
+        case 0:
+          layoutType = LayoutType.rss;
+          break;
+        case 1:
+          layoutType = LayoutType.todo;
+          break;
+        case 2:
+          layoutType = LayoutType.actuality;
+          break;
+        case 3:
+          layoutType = LayoutType.whatEver;
+          break;
+        default:
+          return "Page d'accueil";    
 
-      if (index == 3) {
-        _lastSelected = 'TAB: 1888';
       }
 
     });
   }
+  //     if (index == 0) {
+  //       _lastSelected = "Flux RSS";
+      
+  //     }
+
+  //     if (index == 1) {
+  //       return TodoApp();
+  //     }
+
+  //     if (index == 2) {
+  //       _lastSelected = 'Fil d actualité';
+  //     }
+
+  //     if (index == 3) {
+  //       _lastSelected = 'TAB: 1888';
+  //     }
+
+  //   });
+  // }
 
   void _selectedFab(int index) {
     setState(() {
@@ -83,68 +152,104 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     });
   }
 
+  Widget _buildBody(){
+
+    if(layoutType == LayoutType.todo){
+      
+      return TodoApp();
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+       ),
+        body: FutureBuilder<List<TodoData>>(
+          future: DBProvider.db.getAllTodoLists(),
+          builder: (BuildContext context, AsyncSnapshot<List<TodoData>> snapshot) {
+            if (snapshot.hasData) {
+               return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                TodoData item = snapshot.data[index];
+                return Dismissible(
+                  key: UniqueKey(),
+                  background: Container(color: Colors.red),
+                  onDismissed: (direction) {
+                    DBProvider.db.deleteTodoList(item.id);
+                  },
+                  child: ListTile(
+                    title: Text(item.task),
+                    leading: Text(item.id.toString()),
+                    trailing: Checkbox(
+                      onChanged: (bool value) {
+                        DBProvider.db.blockOrUnblock(item);
+                        setState(() {});
+                      },
+                      value: item.checked,
+                    ),
+                  ),
+                );
+              },
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
       ),
-      body: Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () async {
+          TodoData rnd = testTodo[math.Random().nextInt(testTodo.length)];
+          await DBProvider.db.newTodoList(rnd);
+          setState(() {});
+        },
+),
+      bottomNavigationBar: _buildBottomNavigationBar(),
+       
+    );
+
+  }
+      // body: _buildBody(),
+    
+}
+
+      //   child: new Column(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: <Widget>[
             
               
 
-          ],
+      //     ],
           
-          // style: TextStyle(fontSize: 32.0),
-          // ),
+      //     // style: TextStyle(fontSize: 32.0),
+      //     // ),
         
-        // ),
-        ),
-      ),
-      bottomNavigationBar: FABBottomAppBar(
-        // centerItemText: 'A',
-        color: Colors.grey,
-        selectedColor: Colors.red,
-        //notchedShape: CircularNotchedRectangle(),
-        onTabSelected: _selectedTab,
-        items: [
-          FABBottomAppBarItem(iconData: Icons.rss_feed, text: 'RSS'),
-          FABBottomAppBarItem(iconData: Icons.list, text: 'Todo list'),
-          FABBottomAppBarItem(iconData: Icons.list, text: 'Actualités'),
-          FABBottomAppBarItem(iconData: Icons.list, text: '???'),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: _buildFab(
-          context), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-
-  Widget _buildFab(BuildContext context) {
-    final icons = [Icons.sms, Icons.mail, Icons.phone];
-    return AnchoredOverlay(
-      showOverlay: true,
-      overlayBuilder: (context, offset) {
-        return CenterAbout(
-          position: Offset(offset.dx, offset.dy - icons.length * 35.0),
-          child: FabWithIcons(
-            icons: icons,
-            onIconTapped: _selectedFab,
-          ),
-        );
-      },
-      child: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-        elevation: 2.0,
-      ),
-    );
-  }
-}
+      //   // ),
+      //   ),
+      // ),
+   
+//         // centerItemText: 'A',
+//         color: Colors.grey,
+//         selectedColor: Colors.red,
+//         //notchedShape: CircularNotchedRectangle(),
+//         onTabSelected: _selectedTab,
+//         items: [
+//           FABBottomAppBarItem(iconData: Icons.rss_feed, text: 'RSS'),
+//           FABBottomAppBarItem(iconData: Icons.list, text: 'Todo list'),
+//           FABBottomAppBarItem(iconData: Icons.list, text: 'Actualités'),
+//           FABBottomAppBarItem(iconData: Icons.list, text: '???'),
+//         ],
+//       ),
+//       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+//       floatingActionButton: _buildFab(
+//           context), // This trailing comma makes auto-formatting nicer for build methods.
+//     );
+//   }
+// }
 
 
 
