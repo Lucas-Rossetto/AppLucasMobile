@@ -4,18 +4,25 @@ import 'package:flutter_app/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/todo_list_screen.dart';
 import 'package:flutter_app/todo.dart';
-import 'package:flutter_app/todolistDatabase.dart';
+import 'package:flutter_app/models/todolistDatabase.dart';
 import 'package:flutter_app/todo_list.dart';
 import 'package:flutter_app/todolist.dart';
 import 'package:flutter_app/layout_type.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/database.dart';
+import 'package:flutter_app/BLOCS/DatabaseBloc.dart';
 import 'dart:math' as math;
 
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+  // final Store<AppState> store = Store<AppState>(
+  //   appReducer,
+  //   initialState: AppState.initial(),
+  //   middleware: createStoreMiddleware(),
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -47,24 +54,21 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
+
+
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   String _lastSelected = 'Page d''accueil';
-  List<Todo> todos = [];
   LayoutType layoutType = LayoutType.rss;
   //TodoApp todoapp = new TodoApp();
   //BuildContext context;
-
+   
+   
 
    Color _colorTabMatching({LayoutType layoutSelection}) {
       return layoutType == layoutSelection ? Colors.orange : Colors.grey;
     }
   
-
-     List<TodoData> testTodo = [
-    TodoData(task: "tache" , checked: true),
-];
-
-
+    
 
    BottomNavigationBarItem _buildItem(
       {IconData icon, LayoutType layoutSelection}) {
@@ -96,7 +100,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           _buildItem(icon: Icons.list, layoutSelection: LayoutType.actuality),
           _buildItem(
               icon: Icons.list, layoutSelection: LayoutType.whatEver),
-
         ],
         onTap: _selectedTab,
       );
@@ -167,54 +170,56 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       appBar: AppBar(
         title: Text(widget.title),
        ),
-        body: FutureBuilder<List<TodoData>>(
-          future: DBProvider.db.getAllTodoLists(),
-          builder: (BuildContext context, AsyncSnapshot<List<TodoData>> snapshot) {
-            if (snapshot.hasData) {
-               return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) {
-                TodoData item = snapshot.data[index];
-                return Dismissible(
-                  key: UniqueKey(),
-                  background: Container(color: Colors.red),
-                  onDismissed: (direction) {
-                    DBProvider.db.deleteTodoList(item.id);
-                  },
-                  child: ListTile(
-                    title: Text(item.task),
-                    leading: Text(item.id.toString()),
-                    trailing: Checkbox(
-                      onChanged: (bool value) {
-                        DBProvider.db.blockOrUnblock(item);
-                        setState(() {});
-                      },
-                      value: item.checked,
-                    ),
-                  ),
-                );
-              },
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () async {
-          TodoData rnd = testTodo[math.Random().nextInt(testTodo.length)];
-          await DBProvider.db.newTodoList(rnd);
-          setState(() {});
-        },
-),
+
+        body: _buildBody(),
+
+      //   body: FutureBuilder<List<TodoData>>(
+      //     future: DBProvider.db.getAllTodoLists(),
+      //     builder: (BuildContext context, AsyncSnapshot<List<TodoData>> snapshot) {
+      //       if (snapshot.hasData) {
+      //          return ListView.builder(
+      //         itemCount: snapshot.data.length,
+      //         itemBuilder: (BuildContext context, int index) {
+      //           TodoData item = snapshot.data[index];
+      //           return Dismissible(
+      //             key: UniqueKey(),
+      //             background: Container(color: Colors.red),
+      //             onDismissed: (direction) {
+      //               DBProvider.db.deleteTodoList(item.id);
+      //             },
+      //             child: ListTile(
+      //               title: new Text(item.task),
+      //               leading: Text(item.id.toString()),
+      //               trailing: Checkbox(
+      //                 onChanged: (bool value) {
+      //                   DBProvider.db.blockOrUnblock(item);
+      //                   setState(() {});
+      //                 },
+      //                 value: item.checked,
+      //               ),
+      //             ),
+      //           );
+      //         },
+      //       );
+      //     } else {
+      //       return Center(child: CircularProgressIndicator());
+      //     }
+      //   },
+      // ),
+      
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: () async {
+      //     TodoData rnd = testTodo[math.Random().nextInt(testTodo.length)];
+      //     await DBProvider.db.newTodoList(rnd);
+      //     setState(() {});
+      //   },
+//),
       bottomNavigationBar: _buildBottomNavigationBar(),
        
     );
 
   }
-      // body: _buildBody(),
-    
 }
 
       //   child: new Column(

@@ -19,7 +19,8 @@ class TodoData {
         this.id,
         this.task,
         this.checked
-    });
+    }); 
+
 
     factory TodoData.fromMap(Map<String, dynamic> json) => new TodoData(
         id: json["id"],
