@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     Theme.of(context).platform == TargetPlatform.iOS ? // ternary if statement to check for iOS
-    CupertinoAlertDialog() : // Cupertino style dialog
-    AlertDialog(); // Material style dialog
+    CupertinoApp() : // Cupertino style dialog
+    MaterialApp(); // Material style dialog
     return new MaterialApp(
       title: 'Flutter Demo',
       // theme: new ThemeData(
