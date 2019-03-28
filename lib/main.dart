@@ -8,6 +8,8 @@ import 'package:flutter_app/models/todolistDatabase.dart';
 import 'package:flutter_app/todo_list.dart';
 import 'package:flutter_app/todolist.dart';
 import 'package:flutter_app/layout_type.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/database.dart';
 import 'package:flutter_app/BLOCS/DatabaseBloc.dart';
@@ -25,19 +27,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Theme.of(context).platform == TargetPlatform.iOS ? // ternary if statement to check for iOS
+    CupertinoAlertDialog() : // Cupertino style dialog
+    AlertDialog(); // Material style dialog
     return new MaterialApp(
       title: 'Flutter Demo',
-      theme: new ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+      // theme: new ThemeData(
+
+        
+      //   // This is the theme of your application.
+      //   //
+      //   // Try running your application with "flutter run". You'll see the
+      //   // application has a blue toolbar. Then, without quitting the app, try
+      //   // changing the primarySwatch below to Colors.green and then invoke
+      //   // "hot reload" (press "r" in the console where you ran "flutter run",
+      //   // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
+      //   // counter didn't reset back to zero; the application is not restarted.
+      //   primarySwatch: Colors.blue,
+      // ),
       home: new MyHomePage(title: 'Projet mobile'),
     );
   }
