@@ -28,28 +28,38 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    Theme.of(context).platform == TargetPlatform.iOS ? // ternary if statement to check for iOS
-    CupertinoApp() : // Cupertino style dialog
-    MaterialApp(); // Material style dialog
+    if(Theme.of(context).platform == TargetPlatform.iOS) // ternary if statement to check for iOS
+    return CupertinoApp(
+      title : 'Flutter Demo',
+      home:  new MyHomePage(title : 'Projet mobile'),
+     );
+    else { // Cupertino style dialog
     return new MaterialApp(
       title: 'Flutter Demo',
-      // theme: new ThemeData(
+      home : new MyHomePage(title : 'Projet mobile'),
+    );
+   }
+  }
+ } // Material style dialog
+//     return new MaterialApp(
+//       title: 'Flutter Demo',
+//       // theme: new ThemeData(
 
         
-      //   // This is the theme of your application.
-      //   //
-      //   // Try running your application with "flutter run". You'll see the
-      //   // application has a blue toolbar. Then, without quitting the app, try
-      //   // changing the primarySwatch below to Colors.green and then invoke
-      //   // "hot reload" (press "r" in the console where you ran "flutter run",
-      //   // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
-      //   // counter didn't reset back to zero; the application is not restarted.
-      //   primarySwatch: Colors.blue,
-      // ),
-      home: new MyHomePage(title: 'Projet mobile'),
-    );
-  }
-}
+//       //   // This is the theme of your application.
+//       //   //
+//       //   // Try running your application with "flutter run". You'll see the
+//       //   // application has a blue toolbar. Then, without quitting the app, try
+//       //   // changing the primarySwatch below to Colors.green and then invoke
+//       //   // "hot reload" (press "r" in the console where you ran "flutter run",
+//       //   // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
+//       //   // counter didn't reset back to zero; the application is not restarted.
+//       //   primarySwatch: Colors.blue,
+//       // ),
+//       home: new MyHomePage(title: 'Projet mobile'),
+//     );
+//   }
+// }
 
 
 
