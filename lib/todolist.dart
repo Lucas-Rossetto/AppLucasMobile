@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/todolistDatabase.dart';
-import 'package:flutter_app/database.dart';
+import 'package:flutter_app/models/todolistDatabase.dart';
 import 'package:flutter_app/BLOCS/DatabaseBloc.dart';
+import 'package:flutter_app/utils/database_helper.dart';
 
 class TodoApp extends StatelessWidget {
   @override
@@ -38,7 +39,13 @@ class TodoList extends StatefulWidget {
 
 
 class TodoListState extends State<TodoList> {
+
+  DatabaseHelper databaseHelper = DatabaseHelper();
   List<String> _todoItems = [];
+  List<TodoData> _ListTodoData;
+  TodoData _todoData;
+
+  int count = 0;
   // List<TodoData> testTodo = [];
 
   // final bloc = TodoBloc();
@@ -80,7 +87,7 @@ class TodoListState extends State<TodoList> {
             new FlatButton(
               child: new Text('MARK AS DONE'),
               onPressed: () {
-                _removeTodoItem(index);
+                databaseHelper.deleteTodo(index);
                 Navigator.of(context).pop();
               }
             )
@@ -169,8 +176,8 @@ class TodoListState extends State<TodoList> {
             ),
             body: new TextField(
               autofocus: true,
-              onSubmitted: (val) {
-                _addTodoItem(val);
+              onSubmitted: (_todoData) {
+                databaseHelper.insertTodo( _todoData );
                 Navigator.pop(context); // Close the add todo screen
               },
               decoration: new InputDecoration(
