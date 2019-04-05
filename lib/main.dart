@@ -13,6 +13,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/database.dart';
 import 'package:flutter_app/BLOCS/DatabaseBloc.dart';
+import 'package:flutter_app/todoDetail.dart';
 import 'dart:math' as math;
 
 void main() => runApp(new MyApp());
@@ -170,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
     if(layoutType == LayoutType.todo){
       
-      return TodoApp();
+      return TodoDetail();
 
     }
   }

@@ -64,6 +64,14 @@ class DatabaseHelper {
 		return result;
 	}
 
+
+  Future<int> insertTask(TodoData todo) async {
+		Database db = await this.database;
+		var result = await db.insert(todoTable, todo.toMap());
+		return result;
+	}
+
+
 	// Update Operation: Update a Note object and save it to database
 	Future<int> updateTodo(TodoData todo) async {
 		var db = await this.database;
@@ -95,7 +103,7 @@ class DatabaseHelper {
 		List<TodoData> todoList = List<TodoData>();
 		// For loop to create a 'Note List' from a 'Map List'
 		for (int i = 0; i < count; i++) {
-			todoList.add(TodoData.fromMap(todoMapList[i]));
+			todoList.add(TodoData.fromMapObject(todoMapList[i]));
 		}
 
 		return todoList;

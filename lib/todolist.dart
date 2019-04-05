@@ -1,24 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/todolistDatabase.dart';
-import 'package:flutter_app/models/todolistDatabase.dart';
-import 'package:flutter_app/BLOCS/DatabaseBloc.dart';
 import 'package:flutter_app/utils/database_helper.dart';
 
-class TodoApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new TodoList(),
-      debugShowCheckedModeBanner: false,
-   );
-  }
-}
+// class TodoApp extends StatelessWidget {
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return new MaterialApp(
+//       home: new TodoList(_todoData),
+//       debugShowCheckedModeBanner: false,
+//    );
+//   }
+// }
+
+
+
 
 class TodoList extends StatefulWidget {
 
-  @override
-  createState() => new TodoListState();
+  final TodoData _todoData;
+  final String appBarTitle;
 
+  TodoList(this._todoData,this.appBarTitle);
+
+  @override
+  State<StatefulWidget> createState() {
+  return TodoListState(this._todoData , this.appBarTitle);
+  }
+  // @override
+  // createState() => new TodoListState();
 }
 
 // class _TodoList extends InheritedWidget {
@@ -37,15 +47,16 @@ class TodoList extends StatefulWidget {
 
 // }
 
-
 class TodoListState extends State<TodoList> {
 
+  TextEditingController taskController = TextEditingController();
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<String> _todoItems = [];
-  List<TodoData> _ListTodoData;
   TodoData _todoData;
-
+  String appBarTitle;
   int count = 0;
+  TodoListState(this._todoData, this.appBarTitle);
+
   // List<TodoData> testTodo = [];
 
   // final bloc = TodoBloc();
@@ -57,15 +68,59 @@ class TodoListState extends State<TodoList> {
   // }
 
 
-  void _addTodoItem(String task) {
-    // Only add the task if the user actually entered something
-    if(task.length > 0) {
-      // Putting our code inside "setState" tells the app that our state has changed, and
-      // it will automatically re-render the list
-      setState(() => _todoItems.add(task));
-    }
+  // void _addTodoItem(String task) {
+  //   // Only add the task if the user actually entered something
+  //   if(task.length > 0) {
+  //     // Putting our code inside "setState" tells the app that our state has changed, and
+  //     // it will automatically re-render the list
+  //     //setState(() => _todoItems.add(task));
+  //     setState(() => _todoItems.add(_todoData.toString()));
+  //     }
+  // }
+
+
+  @override
+  Widget build(BuildContext context) {
+
+
+    taskController.text = _todoData.task;
+
+
+    return new Scaffold(
+     //   appBar: new AppBar(
+     //   title: new Text('Todo List')
+     //  ),
+      body: _buildTodoList(),
+      floatingActionButton: new FloatingActionButton(
+        onPressed: _pushAddTodoScreen,
+        tooltip: 'Add task',
+        child: new Icon(Icons.add),
+      ),
+    );
   }
 
+
+
+  void _save() async {
+
+    
+  int result;
+    
+    if(_todoData.id == null){
+      result = await databaseHelper.updateTodo(_todoData);
+    } else {
+      result = await databaseHelper.insertTodo(_todoData);
+    }
+
+    if(result != 0){
+      _showAlertDialog("Status", "Todo ajouté à la liste !");
+    }  else {
+
+      _showAlertDialog("Status", "Echec de l'ajout");
+    }
+
+  }
+ 
 
   void _removeTodoItem(int index) {
     setState(() => _todoItems.removeAt(index));
@@ -143,53 +198,113 @@ class TodoListState extends State<TodoList> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-   //   appBar: new AppBar(
-     //   title: new Text('Todo List')
-    //  ),
-      body: _buildTodoList(),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: _pushAddTodoScreen,
-        tooltip: 'Add task',
-        child: new Icon(Icons.add),
-        
-
-    
-      ),
-    );
-  }
-
-  
-
   void _pushAddTodoScreen() {
+
+
+    TextStyle textStyle = Theme.of(context).textTheme.title;
     // Push this page onto the stack
     Navigator.of(context).push(
       // MaterialPageRoute will automatically animate the screen entry, as well as adding
       // a back button to close it
+
+      
       new MaterialPageRoute(
         builder: (context) {
           return new Scaffold(
             appBar: new AppBar(
               title: new Text('Add a new task')
             ),
-            body: new TextField(
-              autofocus: true,
-              onSubmitted: (_todoData) {
-                databaseHelper.insertTodo( _todoData );
-                Navigator.pop(context); // Close the add todo screen
-              },
-              decoration: new InputDecoration(
-                hintText: 'Enter something to do...',
-                contentPadding: const EdgeInsets.all(16.0)
+
+        body: Padding(
+		    padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
+		    child: ListView(
+			    children: <Widget>[
+
+			    	// First element
+				     Padding(
+					    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+					    child: TextField(
+						    controller: taskController,
+						    style: textStyle,
+						    onChanged: (value) {
+						    	debugPrint('Something changed in Title Text Field');
+						    	updateTask();
+						    },
+						    decoration: InputDecoration(
+							    labelText: 'Title',
+							    labelStyle: textStyle,
+							    border: OutlineInputBorder(
+								    borderRadius: BorderRadius.circular(5.0)
+							    )
+						    ),
+					    ),
+				    ),
+            // Second element
+
+              Padding(
+					    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+					    child: Row(
+						    children: <Widget>[
+						    	Expanded(
+								    child: RaisedButton(
+									    color: Theme.of(context).primaryColorDark,
+									    textColor: Theme.of(context).primaryColorLight,
+									    child: Text(
+										    'Save',
+										    textScaleFactor: 1.5,
+									    ),
+									    onPressed: () {
+									    	setState(() {
+									    	  debugPrint("Save button clicked");
+									    	  _save();
+									    	});
+									    },
+								    ),
+                  ),
+                ] 
               ),
-            )
+              ),
+
+          ]
+        ),
+        ),
           );
         }
-      )
+      ),
     );
   }
+  
+
+            // body: new RaisedButton(
+            //   onPressed : () {
+            //     setState(() {
+            //     debugPrint("Save button clicked");  
+            //     Navigator.pop(context); // Close the add todo screen
+            //     _save();
+            //     });
+            //   }
+            // ),
+  
+void moveToLastScreen() {
+		Navigator.pop(context, true);
+}
+
+  void updateTask(){
+    _todoData.task = taskController.text;
+}
+
+ 
+	void _showAlertDialog(String title, String message) {
+
+		AlertDialog alertDialog = AlertDialog(
+			title: Text(title),
+			content: Text(message),
+		);
+		showDialog(
+				context: context,
+				builder: (_) => alertDialog
+		);
+} 
 }
 
 // import 'package:flutter/material.dart';
