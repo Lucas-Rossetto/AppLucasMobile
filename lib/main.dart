@@ -2,23 +2,18 @@ import 'package:flutter_app/fab_with_icons.dart';
 import 'package:flutter_app/fab_bottom_app_bar.dart';
 import 'package:flutter_app/layout.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/todo_list_screen.dart';
-import 'package:flutter_app/todo.dart';
 import 'package:flutter_app/models/todolistDatabase.dart';
-import 'package:flutter_app/todo_list.dart';
 import 'package:flutter_app/todolist.dart';
 import 'package:flutter_app/layout_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_app/database.dart';
-import 'package:flutter_app/BLOCS/DatabaseBloc.dart';
+import 'package:redux/redux.dart';
 import 'package:flutter_app/todoDetail.dart';
+import 'package:flutter_app/rss_feed_page.dart';
 import 'dart:math' as math;
 
 void main() => runApp(new MyApp());
-
-
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -69,19 +64,14 @@ class MyHomePage extends StatefulWidget {
 
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  String _lastSelected = 'Page d''accueil';
   LayoutType layoutType = LayoutType.rss;
   //TodoApp todoapp = new TodoApp();
   //BuildContext context;
    
-   
-
    Color _colorTabMatching({LayoutType layoutSelection}) {
       return layoutType == layoutSelection ? Colors.orange : Colors.grey;
     }
   
-    
-
    BottomNavigationBarItem _buildItem(
       {IconData icon, LayoutType layoutSelection}) {
     String text = layoutName(layoutSelection);
@@ -161,18 +151,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   //   });
   // }
 
-  void _selectedFab(int index) {
-    setState(() {
-      _lastSelected = 'FAB: $index';
-    });
-  }
 
   Widget _buildBody(){
 
     if(layoutType == LayoutType.todo){
-      
-      return TodoDetail();
 
+      return TodoDetail();
+      //return TodoList(this._todoData,"appBar");
+
+    }
+
+    if(layoutType == LayoutType.rss){
+
+      return RSSFeed();
     }
   }
 
@@ -486,3 +477,5 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 //     );
 //   }
 // }
+
+

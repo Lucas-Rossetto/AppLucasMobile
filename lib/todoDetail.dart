@@ -15,7 +15,7 @@ class TodoDetail extends StatefulWidget {
   }
 }
 
-class TodoDetailState extends State<TodoList> {
+class TodoDetailState extends State<TodoDetail> {
 
 	DatabaseHelper databaseHelper = DatabaseHelper();
 	List<TodoData> todoList;
@@ -31,16 +31,12 @@ class TodoDetailState extends State<TodoList> {
 
     return Scaffold(
 
-	    appBar: AppBar(
-		    title: Text('Notes'),
-	    ),
-
 	    body: getNoteListView(),
 
 	    floatingActionButton: FloatingActionButton(
 		    onPressed: () {
 		      debugPrint('FAB clicked');
-		      navigateToDetail(TodoData(1, '', true), 'Add Note');
+		      navigateToDetail(TodoData(''), 'Add Todo');
 		    },
 
 		    tooltip: 'Add Note',
@@ -83,36 +79,7 @@ class TodoDetailState extends State<TodoList> {
 			},
 		);
   }
-
-  // Returns the priority color
-	Color getPriorityColor(int priority) {
-		switch (priority) {
-			case 1:
-				return Colors.red;
-				break;
-			case 2:
-				return Colors.yellow;
-				break;
-
-			default:
-				return Colors.yellow;
-		}
-	}
-
-	// Returns the priority icon
-	Icon getPriorityIcon(int priority) {
-		switch (priority) {
-			case 1:
-				return Icon(Icons.play_arrow);
-				break;
-			case 2:
-				return Icon(Icons.keyboard_arrow_right);
-				break;
-			default:
-				return Icon(Icons.keyboard_arrow_right);
-		}
-	}
-
+  
 	void _delete(BuildContext context, TodoData todo) async {
 
 		int result = await databaseHelper.deleteTodo(todo.id);
