@@ -154,16 +154,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   Widget _buildBody(){
 
+    if(layoutType == LayoutType.rss){
+
+      return RSSFeed();
+    }
+
     if(layoutType == LayoutType.todo){
 
       return TodoDetail();
       //return TodoList(this._todoData,"appBar");
-
-    }
-
-    if(layoutType == LayoutType.rss){
-
-      return RSSFeed();
     }
   }
 

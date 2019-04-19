@@ -78,9 +78,9 @@ class _RSSFeedState extends State<RSSFeed> {
   Widget build(BuildContext context) {
     return new WillPopScope(
         child: new Scaffold(
-          appBar: new AppBar(
-            title: new Text(widget.title),
-          ),
+        //   appBar: new AppBar(
+        //     title: new Text(widget.title),
+        //   ),
           body: new ListView.builder(
             itemCount:
                 widget.rssOutput.length != 0 ? widget.rssOutput.length : 1,
@@ -239,9 +239,9 @@ class _RSSHomePageState extends State<RSSHomePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-      ),
+      // appBar: new AppBar(
+      //   title: new Text(widget.title),
+      // ),
       body: new ListView.builder(
         itemCount: feeds.length,
         itemBuilder: (context, index) {
