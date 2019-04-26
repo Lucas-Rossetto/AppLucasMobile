@@ -17,7 +17,6 @@ dependencies:
   xml: ^3.3.1
   http: ^0.11.3+16
   permission: ^0.1.1
-  permission_handler: '^2.2.0'
   android_intent: ^0.3.0+2
   url_launcher: ^5.0.2
   flutter_webview_plugin: ^0.3.0

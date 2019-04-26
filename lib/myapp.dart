@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:android_intent/android_intent.dart';
-//import 'package:permission/permission.dart';
-//import 'package:permission_handler/permission_handler.dart';
+import 'package:permission/permission.dart';
 
 void main() => runApp(new MyApp());
 
@@ -31,8 +30,10 @@ class PhonePage extends StatefulWidget {
 
 class PhonePageState extends State<PhonePage>{
 
+
+
 AndroidIntent intent = AndroidIntent(
-  action: 'android.intent.action.DIAL',
+  action: 'android.intent.action.CALL',
   data: "tel://0620470408"
 );
   _launchURL() async {
