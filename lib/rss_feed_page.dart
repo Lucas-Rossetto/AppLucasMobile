@@ -74,6 +74,7 @@ class _RSSFeedState extends State<RSSFeed> {
     }
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
@@ -81,6 +82,7 @@ class _RSSFeedState extends State<RSSFeed> {
         //   appBar: new AppBar(
         //     title: new Text(widget.title),
         //   ),
+        
           body: new ListView.builder(
             itemCount:
                 widget.rssOutput.length != 0 ? widget.rssOutput.length : 1,
@@ -261,7 +263,7 @@ class _RSSHomePageState extends State<RSSHomePage> {
       floatingActionButton: new FloatingActionButton(
         onPressed: _addFeedDialog,
         tooltip: 'Add new RSS feed',
-        child: new Icon(Icons.add),
+        child: new Icon(Icons.rss_feed),
       ),
     );
   }

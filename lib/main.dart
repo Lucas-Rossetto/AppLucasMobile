@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:flutter_app/myapp.dart';
 import 'package:flutter_app/todoDetail.dart';
 import 'package:flutter_app/rss_feed_page.dart';
 import 'dart:math' as math;
@@ -50,8 +51,6 @@ final ThemeData kDefaultTheme = new ThemeData(
   }
 }
 
-
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -60,8 +59,6 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
-
-
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   LayoutType layoutType = LayoutType.rss;
@@ -156,13 +153,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
     if(layoutType == LayoutType.rss){
 
-      return RSSFeed();
+      return RSSHomePage();
     }
 
     if(layoutType == LayoutType.todo){
 
       return TodoDetail();
       //return TodoList(this._todoData,"appBar");
+    }
+
+    if(layoutType == LayoutType.whatEver){
+      return PhonePage();
     }
   }
 

@@ -5,12 +5,10 @@ import 'package:flutter_app/utils/database_helper.dart';
 import 'package:flutter_app/todolist.dart';
 import 'package:sqflite/sqflite.dart';
 
-
 class TodoDetail extends StatefulWidget {
 
 	@override
   State<StatefulWidget> createState() {
-
     return TodoDetailState();
   }
 }
